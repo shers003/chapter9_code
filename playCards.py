@@ -88,7 +88,37 @@ class Deck(Hand):
                   else:
                       print('No more cards to deal')
                 
-        
+class Unreadable_Card(Card):
+
+    #Sub classes can over-write super-class methods
+    def __str__(self):
+
+        return '<Unreadable>'
+
+class Flip_Card(Card):
+
+    def __init__(self, rank, suit, flipped = True):
+
+        #Super function runs method from super class (Card)
+        #first param is sub-class to say invoke from it's super class (Card)
+        #Second is a reference to the objescts attributes through self
+        #Next runs Card __init__ method with params passed
+        #So in this case initialises rank and suit to self
+        super(Flip_Card,self).__init__(rank,suit)
+        self.flipped = flipped
+
+    def __str__(self):
+
+        if self.flipped:
+            rep = super(Flip_Card,self).__str__()
+        else:
+            rep = 'XX'
+
+        return rep
+
+    def flip(self):
+
+        self.flipped = not self.flipped
 
 def main():
     print('\t\tWelcome to the card game\n\n')
@@ -173,6 +203,23 @@ def main():
     print(d)
     print(my_hand)
     print(your_hand)
+
+    print('\nUsing sub-classes Unreadable_Card & Flip_Card\n')
+
+    #I know I'm overiding an object lol, dont't know if it is seen as bad practice
+    #Still I feel cool
+    card1 = Unreadable_Card('A','h')
+    card2 = Flip_Card('1','h')
+
+    print('\nReading an unreadable card')
+    print(card1)
+
+    print('\nReading an Flipped card')
+    print(card2)
+
+    print('\nPrinting a flipped Flipped card')
+    card2.flip()
+    print(card2)
     
 
 main()

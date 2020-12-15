@@ -72,13 +72,14 @@ class Deck(Hand):
         for suit in Card.SUITS:
             for rank in Card.RANKS:
                 self.add(Card(rank,suit))
+                
     def shuffle(self):
 
         import random
         random.shuffle(self.cards)
 
     def deal(self,hands,num_cards = 1):
-        ''' my own code if error refer to pg259'''
+        '''my own code if error refer to pg259'''
 
         for hand in hands:
             for c in range(0,num_cards):
@@ -224,4 +225,4 @@ def main():
 
 main()
 
-input('Press enter to exit')
+input('\nPress enter to exit')

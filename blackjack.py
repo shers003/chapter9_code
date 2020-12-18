@@ -44,8 +44,8 @@ class BJ_Deck(cards.Deck):
     ''' A Blackjack deck '''
 
     #Overwritting to use BJ_Card
-    def poppulate(self):
-
+    def populate(self):
+        
         for suit in BJ_Card.SUITS:
             for rank in BJ_Card.RANKS:
                 card = BJ_Card(rank,suit)
@@ -137,7 +137,6 @@ class BJ_Game(object):
 
     def __init__(self,names):
         self.players = []
-        self.e = 'e'
 
         for name in names:
             player = BJ_Player(name)
@@ -146,7 +145,7 @@ class BJ_Game(object):
         self.dealer = BJ_Dealer('Dealer')
 
         self.deck = BJ_Deck()
-        self.deck.poppulate()
+        self.deck.populate()
         self.deck.shuffle()
 
     @property
@@ -164,7 +163,80 @@ class BJ_Game(object):
         print(player)
         if player.is_busted():
             player.bust()
+
+    def play(self):
+        ''' Game loop '''
+        if len(self.deck.cards) < 21:
+            self.deck.clear()
+            self.deck.populate()
+            self.deck.shuffle()
+
+        ''' Dealing player and dealer two cards '''
+        self.deck.deal(self.players+[self.dealer], num_cards = 2)
+        self.dealer.flip_first_card()
+        for player in self.players:
+            print(player)
+        print(self.dealer)
+
+        ''' Dealing additional cards to player '''
+        for player in self.players:
+            self.__additional_cards(player)
+
+        self.dealer.flip_first_card() #Revel delears first card
+       
+        if not self.still_playing:
+            ''' Since all plaeyers busted show dealers hand '''
+            print(self.dealer)
+        else:
+            ''' Deal additional cards to dealer '''
+            #print(self.dealer)
+            self.__additional_cards(self.dealer)
+
+            if self.dealer.is_busted():
+                for player in self.still_playing:
+                    player.win()
+            else:
+                for player in self.still_playing:
+                    
+                    if player.total > self.dealer.total:
+                        player.win()
+                        
+                    elif player.total < self.dealer.total:
+                        player.lose()
+                        
+                    else:
+                        player.push()
+
+        for player in self.players:
+            player.clear()
+        self.dealer.clear()
+
+def main():
+    print('\t\tWelcome to blackjack\n\n')
+
+    names = []
+    number = None
+    
+    while not number:
+        try:
+            number = game.ask_number('How many players are going to play today? ',
+                                    low = 1, high = 8)
+        except ValueError:
+            print('Pls enter a number\n')
             
-game = BJ_Game(['b','d','succ','yus'])
-for k in game.players:
-    print(k)
+    for i in range(number):
+        name = input('Enter player name: ')
+        names.append(name)
+
+    print()    
+
+    theGame = BJ_Game(names)
+    again = None
+    while again != 'n':
+        theGame.play()
+        again = game.ask_yes_no('Do you want to play again (y/n)')
+        
+    
+
+main()
+input('Enter to Exit')    

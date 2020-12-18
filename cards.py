@@ -61,7 +61,7 @@ class Hand(object):
 class Deck(Hand):
     ''' A playing deck '''
 
-    def poppulate(self):
+    def populate(self):
 
         for suit in Card.SUITS:
             for rank in Card.RANKS:

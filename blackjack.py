@@ -100,20 +100,21 @@ class BJ_Hand(cards.Hand):
 
 class BJ_Player(BJ_Hand):
     ''' A blackjack player '''
-
+        
     def is_hitting(self):
         res = game.ask_yes_no('\n'+self.name+
                               ' do you want to hit? (y/n): ')
         return res == 'y'
 
-    def bust(self):
+    def bust(self):        
         print(self.name,'busted')
         self.lose()
         
     def lose(self):
         print(self.name,'LOSES')
 
-    def win(self):
+        
+    def win(self):       
         print(self.name,'WINS')
 
     def push(self):
@@ -135,10 +136,11 @@ class BJ_Dealer(BJ_Hand):
 class BJ_Game(object):
     ''' A blackjack game '''    
 
-    def __init__(self,names):
+    def __init__(self, names):
         self.players = []
 
         for name in names:
+
             player = BJ_Player(name)
             self.players.append(player)
 
@@ -157,7 +159,7 @@ class BJ_Game(object):
         return sp
     
     def __additional_cards(self, player):
-
+        
         while not player.is_busted() and player.is_hitting():
             self.deck.deal([player])
         print(player)
@@ -166,11 +168,13 @@ class BJ_Game(object):
 
     def play(self):
         ''' Game loop '''
+        print()
+
         if len(self.deck.cards) < 21:
             self.deck.clear()
             self.deck.populate()
             self.deck.shuffle()
-
+        
         ''' Dealing player and dealer two cards '''
         self.deck.deal(self.players+[self.dealer], num_cards = 2)
         self.dealer.flip_first_card()
@@ -226,8 +230,10 @@ def main():
             
     for i in range(number):
         name = input('Enter player name: ')
+            
         names.append(name)
 
+        
     print()    
 
     theGame = BJ_Game(names)

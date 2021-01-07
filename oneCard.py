@@ -59,8 +59,8 @@ class WarGame(object):
             player = WarPlayer(name)
             self.players.append(player)
 
-    def getWinner(self):
-        ''' This needs improving '''
+    def __getWinner(self):
+        ''' Determines what player wins '''
         
         totals = []
         highestValue = None
@@ -86,23 +86,19 @@ class WarGame(object):
         for p in self.players:
             print(p)
             
-        winners = self.getWinner()
+        winners = self.__getWinner()
         
         if len(winners) == 1:
             print('The winner is: ',end=' ')
-            for player in self.getWinner():
+            for player in self.__getWinner():
                 print(player, end = ' ')
             print()
         else:
             print('The winners are: ',end=' ')
-            for player in self.getWinner():
+            for player in self.__getWinner():
                 print(player, end = ' ') 
             print()        
-
-
-
-
-    
+   
 def main():
     ''' Main function '''
     print('\t\tWelcome to War cards\n\n')
